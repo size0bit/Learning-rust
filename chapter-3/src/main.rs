@@ -81,6 +81,95 @@ fn main() {
 
     //函数参数
     another_function1(5);
+
+    //函数体中的语句和表达式
+    let _y = 6;//语句
+    // let x=(let y=6);//在Rust中，你不能将一条let语句赋值给另一个变量
+    let _x = 5;
+    //代码块内的值会被赋值给y
+    let y = {//代码块
+        let x = 3;
+        x + 1//表达式
+    };
+    println!("y的值是{}", y);
+
+    //函数的返回值
+    let x = five();
+    println!("x的值是{}", x);
+    let x = plus_one(23);
+    println!("x的值是{}", x);
+
+    //控制流
+    //if表达式
+    let number = 3;
+    if number < 5 {
+        println!("这是真的");
+    } else {
+        println!("这是假的");
+    }
+    // if number {//表达式必须产生一个bool类型的值
+    //     println!("这是真的");
+    // }
+    if number != 0 {
+        println!("这是真的");
+    }
+    if number % 4 == 0 {
+        println!("能被4整除");
+    } else if number % 3 == 0 {
+        println!("能被3整除");
+    } else if number % 2 == 0 {
+        println!("能被2整除");
+    } else {
+        println!("不能被4、3、2整除")
+    }
+    let condition = true;
+    let number = if condition {
+        5
+    } else {
+        6
+    };
+    println!("这个值是{}", number);
+    // let number = if condition {//if与else分支产生了不同类型的值
+    //     5
+    // } else {
+    //     "six"
+    // };
+    // println!("这个值是{}", number);
+
+    //使用循环重复执行代码：Rust提供了3种循环：loop、while和for
+
+    //loop循环
+    let mut counter = 0;
+    let result = loop {
+        counter += 1;
+        if counter == 10 {
+            break counter * 2;
+        }
+    };
+    println!("这个值是{}", result);
+
+    //while循环
+    let mut number = 3;
+    while number != 0 {
+        println!("{}!", number);
+        number -= 1;
+    }
+    println!("LIFTOFF");
+
+    //for循环
+    let a = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+    let mut index = 0;
+    while index < 10 {
+        println!("数组里有{}", a[index]);
+        index += 1;
+    }
+    for element in a.iter() {
+        println!("数组里有{}", element);
+    }
+    for number in (1..10).rev() {
+        println!("{}!", number);
+    }
+    println!("LIFTOFF!!!")
 }
 
 fn another_function() {
@@ -89,4 +178,12 @@ fn another_function() {
 
 fn another_function1(x: i32) {
     println!("x的值是{}", x);
+}
+
+fn five() -> i32 {
+    5000
+}
+
+fn plus_one(x: i32) -> i32 {
+    x + 1
 }
