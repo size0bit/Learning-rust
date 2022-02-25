@@ -32,4 +32,10 @@ fn main() {
     我们使用的内存是由操作系统在运行时动态分配出来的
     当使用完String时，我们需要通过某种方式将这些内存归还给操作系统
     */
+    let x = 5;
+    let y = x;
+    println!("{}", y);
+    let s1 = String::from("hello");
+    let s2 = s1;
+    println!("{}", s2);
 }
