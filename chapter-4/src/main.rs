@@ -71,12 +71,29 @@ fn main() {
     //let a = s2;
     println!("{}s1", s1);
     let a = s3;//s3未转移多有权
-    println!("{},", a)
+    println!("{},", a);
     /*
     变量所有权的转移总是遵循相同的模式：将一个值赋值给另一个变量时就会转移所有权。
     当一个持有堆数据的变量离开作用域时，它的数据就会被drop清理回收，
     除非这些数据的所有权移动到了另一个变量上
     */
+
+    let s3 = String::from("hello");
+    let len = calculate_length(&s3);//传递引用
+    println!("the length of {} is {}", s3, len);
+
+    //可变引用
+    let mut s = String::from("hello");
+    change(&mut s);
+    println!("{}", s);
+
+    //
+    // let mut s = String::from("hello");
+    // let r1 = &mut s;
+    // let r2 = &mut s;
+    // println!("{},{}", r1, r2);
+    //let mut s=String::from("hello");
+
 }
 
 //some_string进入作用域
@@ -102,3 +119,19 @@ fn gives_ownership() -> String {
 fn takes_and_gives_back(a_string: String) -> String {//a_string进入作用域
     a_string//a_string作为返回值移动至调用函数
 }
+
+/*fn calculate_length(s: String) -> (String, usize) {
+    let length = s.len();//返回字符串的长度
+    (s, length)
+}*/
+
+//引用与借用
+fn calculate_length(s: &String) -> usize {
+    s.len()
+}
+
+//可变引用
+fn change(some_string: &mut String) {
+    some_string.push_str(",world");
+}
+
