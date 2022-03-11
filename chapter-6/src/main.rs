@@ -456,32 +456,407 @@
 //
 // 示例
 
+//todo:
+// fn main() {
+//     #[derive(Debug)]
+//     struct Person {
+//         name: String,
+//         age: Box<u8>,
+//     }
+//     let person = Person {
+//         name: String::from("Alice"),
+//         age: Box::new(20),
+//     };
+//     // 通过这种解构式模式匹配，person.name 的所有权被转移给新的变量 `name`
+//     // 但是，这里 `age` 变量确是对 person.age 的引用, 这里 ref 的使用相当于: let age = &person.age
+//     let Person {
+//         name,
+//         ref age
+//     } = person;
+//     println!("The person's age is {}", age);
+//     println!("The person's name is {}", name);
+//     // Error! 原因是 person 的一部分已经被转移了所有权，因此我们无法再使用它
+//     //println!("The person struct is {:?}", person);
+//     // 虽然 `person` 作为一个整体无法再被使用，但是 `person.age` 依然可以使用
+//     println!("The person's age from person struct is {}", person.age);
+// }
+
+
+// fn main() {
+//     let t = (String::from("hello"), String::from("world"));
+//
+//     let _s = t.0;
+//
+//     // 仅修改下面这行代码，且不要使用 `_s`
+//     println!("{:?}", t.1);
+// }
+
+// fn main() {
+//     let t = (String::from("hello"), String::from("world"));
+//
+//     // 填空，不要修改其它代码
+//     let (s1, s2) = &t;
+//
+//     println!("{:?}, {:?}, {:?}", s1, s2, t); // -> "hello", "world", ("hello", "world")
+// }
+
+
+// 引用和借用
+// 引用
+// fn main() {
+//     let x = 5;
+//     // 填写空白处
+//     let p = &x;
+//     println!("x 的内存地址是 {:p}", p); // output: 0x16fa3ac84
+// }
+
+
+// fn main() {
+//     let x = 5;
+//     let y = &x;
+//     // 只能修改以下行
+//     assert_eq!(5, *y);
+// }
+
+// 修复错误
+// fn main() {
+//     let s = String::from("hello, ");
+//
+//     borrow_object(&s);
+// }
+//
+// fn borrow_object(s: &String) {
+//     println!("{}", s)
+// }
+
+// 修复错误
+// fn main() {
+//     let mut s = String::from("hello, ");
+//
+//     push_str(&mut s);
+// }
+//
+// fn push_str(s: &mut String) {
+//     s.push_str("world")
+// }
+
+// fn main() {
+//     let mut s = String::from("hello, ");
+//
+//     // 填写空白处，让代码工作
+//     let p = &mut s;
+//
+//     p.push_str("world");
+//     println!("{}", p);
+// }
+
+// fn main() {
+//     let c = '中';
+//
+//     let r1 = &c;
+//     // 填写空白处，但是不要修改其它行的代码
+//     let ref r2 = c;
+//
+//     assert_eq!(*r1, *r2);
+//
+//     // 判断两个内存地址的字符串是否相等
+//     assert_eq!(get_addr(r1), get_addr(r2));
+// }
+//
+// // 获取传入引用的内存地址的字符串形式
+// fn get_addr(r: &char) -> String {
+//     format!("{:p}", r)
+// }
+
+//借用规则
+// 移除代码某个部分，让它工作
+// 你不能移除整行的代码！
+// fn main() {
+//     let s = String::from("hello");
+//     let r1 = &s;
+//     let r2 = &s;
+//     println!("{}, {}", r1, r2);
+// }
+
+
+// 可变性
+// 🌟 错误: 从不可变对象借用可变
+// fn main() {
+//     // 通过修改下面一行代码来修复错误
+//     let mut s = String::from("hello, ");
+//     borrow_object(&mut s);
+// }
+//
+// fn borrow_object(s: &mut String) {
+//     println!("{}", s);
+// }
+
+//Ok: 从可变对象借用不可变
+// 下面的代码没有任何错误
+// fn main() {
+//     let mut s = String::from("hello, ");
+//     borrow_object(&s);
+//     s.push_str("world");
+//     println!("{},", s);
+// }
+//
+// fn borrow_object(_s: &String) {}
+
+// NLL
+// 🌟🌟
+
+
+//todo:
+// 注释掉一行代码让它工作
+// fn main() {
+//     let mut s = String::from("hello, ");
+//     let r1 = &mut s;
+//     r1.push_str("world");
+//     let r2 = &mut s;
+//     r2.push_str("!");
+//     //println!("{}",r1);
+// }
+
+
+// fn main() {
+//     let mut s = String::from("hello, ");
+//     let r1 = &mut s;
+//     let r2 = &mut s;
+//     // 在下面增加一行代码人为制造编译错误：cannot borrow `s` as mutable more than once at a time
+//     // 你不能同时使用 r1 和 r2
+//     r1.push_str("world!");
+// }
+
+// 字符串
+// 字符串字面量的类型是 &str， 例如 let s: &str = "hello, world" 中的 "hello, world" 的类型就是 &str。
+//
+// str 和 &str
+// 🌟 正常情况下我们无法使用 str 类型，但是可以使用 &str 来替代
+// 修复错误，不要新增代码行
+// fn main() {
+//     let s: &str = "hello, world";
+// }
+
+//🌟🌟 如果要使用 str 类型，只能配合 Box。 & 可以用来将 Box<str> 转换为 &str 类型
+// 使用至少两种方法来修复错误
+// fn main() {
+//     let s: Box<str> = "hello,world".into();
+//     greetings(&s);
+// }
+//
+// fn greetings(s: &str) {
+//     println!("{}", s);
+// }
+
+// String
+// String 是定义在标准库中的类型，分配在堆上，可以动态的增长。它的底层存储是动态字节数组的方式( Vec<u8> )，
+// 但是与字节数组不同，String 是 UTF-8 编码。
+// fn main() {
+//     let mut s = String::new();
+//     s.push_str("hello,world");
+//     s.push_str("!");
+//     assert_eq!(s, "hello,world!");
+// }
+
+// 修复所有错误，并且不要新增代码行
+// fn main() {
+//     let mut s = String::from("hello");
+//     s.push(',');
+//     s.push_str("world");
+//     s += "!";
+//     println!("{}", s);
+// }
+
+//🌟🌟 我们可以用 replace 方法来替换指定的子字符串
+// fn main() {
+//     let s = String::from("i like dogs");
+//     let s1 = s.replace("dogs", "cats");
+//     assert_eq!(s1, "i like cats");
+// }
+
+//🌟🌟 你只能将 String 跟 &str 类型进行拼接，并且 String 的所有权在此过程中会被 move
+// fn main() {
+//     let s1 = String::from("hello");
+//     let s2 = String::from(",world");
+//     let s3 = s1.clone() + &s2;
+//     assert_eq!(s3, "hello,world");
+//     println!("{}", s1);
+// }
+
+// &str 和 String
+// 与 str 的很少使用相比，&str 和 String 类型却非常常用，因此也非常重要。
+// 我们可以使用两种方法将 &str 转换成 String 类型
+// fn main() {
+//     let s = "hello,world";
+//     greetings(s.to_string());
+// }
+//
+// fn greetings(s: String) {
+//     println!("{}", s);
+// }
+
+// 我们可以使用 String::from 或 to_string 将 &str 转换成 String 类型
+// fn main() {
+//     let s = "hello,world".to_string();
+//     let s1: &str = &s;
+// }
+
+
+//字符串转义
+//todo:
+// fn main() {
+//     // 你可以使用转义的方式来输出想要的字符，这里我们使用十六进制的值，例如 \x73 会被转义成小写字母 's'
+//     // 填空以输出 "I'm writing Rust"
+//     let byte_escape = "I'm writing Ru\x73__!";
+//     println!("What are you doing\x3F (\\x3F means ?) {}", byte_escape);
+//     // 也可以使用 Unicode 形式的转义字符
+//     let unicode_codepoint = "\u{211D}";
+//     let character_name = "\"DOUBLE-STRUCK CAPITAL R\"";
+//     println!("Unicode character {} (U+211D) is called {}",
+//              unicode_codepoint, character_name );
+//     // 还能使用 \ 来连接多行字符串
+//     let long_string = "String literals
+//                         can span multiple lines.
+//                         The linebreak and indentation here \
+//                          can be escaped too!";
+//     println!("{}", long_string);
+// }
+
+
+//有时候需要转义的字符很多，我们会希望使用更方便的方式来书写字符串: raw string.
+//todo:
+// fn main() {
+//     let raw_str = "Escapes don't work here: \x3F \u{211D}";
+//     // 修改以下代码行，让它工作
+//     assert_eq!(raw_str, "Escapes don't work here: ? ℝ");
+//     // 如果你希望在字符串中使用双引号，可以使用以下形式
+//     let quotes = r#"And then I said: "There is no escape!""#;
+//     println!("{}", quotes);
+//     // 如果希望在字符串中使用 # 号，可以如下使用：
+//     let delimiter = r###"A string with "# in it. And even "##!"###;
+//     println!("{}", delimiter);
+//     // 填空
+//     let long_delimiter = r###"Hello, "##""###;
+//     assert_eq!(long_delimiter, "Hello, \"##\"")
+// }
+
+// 字节字符串
+// 想要一个非 UTF-8 形式的字符串吗(我们之前的 str, &str, String 都是 UTF-8 字符串) ?
+// 可以试试字节字符串或者说字节数组:
+//todo:
+// use std::str;
+// fn main() {
+//     // 注意，这并不是 `&str` 类型了！
+//     let bytestring: &[u8; 21] = b"this is a byte string";
+//     // 字节数组没有实现 `Display` 特征，因此只能使用 `Debug` 的方式去打印
+//     println!("A byte string: {:?}", bytestring);
+//     // 字节数组也可以使用转义
+//     let escaped = b"\x52\x75\x73\x74 as bytes";
+//     // ...但是不支持 unicode 转义
+//     // let escaped = b"\u{211D} is not allowed";
+//     println!("Some escaped bytes: {:?}", escaped);
+//     // raw string
+//     let raw_bytestring = br"\u{211D} is not escaped here";
+//     println!("{:?}", raw_bytestring);
+//     // 将字节数组转成 `str` 类型可能会失败
+//     if let Ok(my_str) = str::from_utf8(raw_bytestring) {
+//         println!("And the same as text: '{}'", my_str);
+//     }
+//     let _quotes = br#"You can also use "fancier" formatting, \
+//                     like with normal raw strings"#;
+//     // 字节数组可以不是 UTF-8 格式
+//     let shift_jis = b"\x82\xe6\x82\xa8\x82\xb1\x82\xbb"; // "ようこそ" in SHIFT-JIS
+//     // 但是它们未必能转换成 `str` 类型
+//     match str::from_utf8(shift_jis) {
+//         Ok(my_str) => println!("Conversion successful: '{}'", my_str),
+//         Err(e) => println!("Conversion failed: {:?}", e),
+//     };
+// }
+
+// 字符串索引string index
+// 🌟🌟 你无法通过索引的方式去访问字符串中的某个字符，但是可以使用切片的方式 &s1[start..end] ，
+// 但是start 和 end 必须准确落在字符的边界处.
+// fn main() {
+//     let s1 = String::from("hi,中国");
+//     let h = &s1[0..1];
+//     assert_eq!(h, "h");
+//     let h1 = &s1[3..6];
+//     assert_eq!(h1, "中");
+// }
+
+//操作 UTF-8 字符串
+// fn main() {
+//     for c in "你好，世界!".chars() {
+//         print!("{}", c)
+//     }
+// }
+
+
+//todo:
+// use utf8_slice;
+// fn main() {
+//     let s = "The 🚀 goes to the  🌑!";
+//     let rocket = utf8_slice::slice(s, 4, 5);
+// }
+
+
+// 数组
+// 数组的类型是 [T; Lengh], 就如你所看到的，数组的长度是类型签名的一部分，
+// 因此数组的长度必须在编译期就已知，例如你不能使用以下方式来声明一个数组:
+//
+// fn main() {
+//     let arr: [i32; 5] = [1, 2, 3, 4, 5];
+//     assert_eq!(arr.len(), 5);
+// }
+
+// fn main() {
+//     // 很多时候，我们可以忽略数组的部分类型，也可以忽略全部类型，让编译器帮助我们推导
+//     let arr0 = [1, 2, 3];
+//     let arr: [char; 3] = ['a', 'b', 'c'];
+//     // 填空
+//     // 数组分配在栈上， `std::mem::size_of_val` 函数会返回整个数组占用的内存空间
+//     // 数组中的每个 char 元素占用 4 字节的内存空间，因为在 Rust 中， char 是 Unicode 字符
+//     assert_eq!(std::mem::size_of_val(&arr), arr0.len()*4)
+// }
+
+
+//数组中的所有元素可以一起初始化为同一个值
+// fn main() {
+//     let list: [i32; 100] = [1; 100];
+//     assert_eq!(list[0], 1);
+//     assert_eq!(list.len(), 100);
+// }
+
+//数组中的所有元素必须是同一类型
+// fn main() {
+//     let _arr = [1, 2, 3];
+// }
+
+
+// 数组的下标索引从 0 开始.
+// fn main() {
+//     let arr = ['a', 'b', 'c'];
+//     let ele = arr[1];
+//     assert_eq!(ele, 'b');
+// }
+
+//越界索引会导致代码的 panic.
+// fn main() {
+//     let names = [String::from("Sunfei"), "Sunface".to_string()];
+//     // `get` 返回 `Option<T>` 类型，因此它的使用非常安全
+//     let name0 = names.get(0).unwrap();
+//     println!("{}", name0);
+//     // 但是下标索引就存在越界的风险了
+//     let _name1 = &names[1];
+// }
+
+// 切片( Slice )
+// 切片跟数组相似，但是切片的长度无法在编译期得知，因此你无法直接使用切片类型。
+// 🌟🌟 这里, [i32] 和 str 都是切片类型，但是直接使用它们会造成编译错误，
+// 如下代码所示。为了解决，你需要使用切片的引用： &[i32], &str.
+// 修复代码中的错误，不要新增代码行!
 fn main() {
-    #[derive(Debug)]
-    struct Person {
-        name: String,
-        age: Box<u8>,
-    }
-
-    let person = Person {
-        name: String::from("Alice"),
-        age: Box::new(20),
-    };
-
-    // 通过这种解构式模式匹配，person.name 的所有权被转移给新的变量 `name`
-    // 但是，这里 `age` 变量确是对 person.age 的引用, 这里 ref 的使用相当于: let age = &person.age
-    let Person {
-        name,
-        ref age
-    } = person;
-
-    println!("The person's age is {}", age);
-
-    println!("The person's name is {}", name);
-
-    // Error! 原因是 person 的一部分已经被转移了所有权，因此我们无法再使用它
-    //println!("The person struct is {:?}", person);
-
-    // 虽然 `person` 作为一个整体无法再被使用，但是 `person.age` 依然可以使用
-    println!("The person's age from person struct is {}", person.age);
+    let arr = [1, 2, 3];
+    let s1: &[i32] = &arr[0..2];
+    let s2: &str = "hello,world";
 }
