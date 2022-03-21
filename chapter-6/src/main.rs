@@ -855,8 +855,805 @@
 // 🌟🌟 这里, [i32] 和 str 都是切片类型，但是直接使用它们会造成编译错误，
 // 如下代码所示。为了解决，你需要使用切片的引用： &[i32], &str.
 // 修复代码中的错误，不要新增代码行!
-fn main() {
-    let arr = [1, 2, 3];
-    let s1: &[i32] = &arr[0..2];
-    let s2: &str = "hello,world";
+// fn main() {
+//     let arr = [1, 2, 3];
+//     let s1: &[i32] = &arr[0..2];
+//     let s2: &str = "hello,world";
+// }
+
+// fn main() {
+//     let arr: [char; 3] = ['中', '国', '人'];
+//     let slice = &arr[..2];
+//     println!("{:?}", slice);
+//     // 修改数字 `6` 让代码工作
+//     // 小提示: 切片和数组不一样，它是引用。如果是数组的话，那下面的 `assert!` 将会通过：
+//     // 因为'中'和'国'是 UTF-8 字符，它们每个占用 3 个字节，2 个字符就是 6 个字节
+//     assert_eq!(std::mem::size_of_val(&slice), 16);
+// }
+
+// fn main() {
+//     let arr: [i32; 5] = [1, 2, 3, 4, 5];
+//     // 填空让代码工作起来
+//     let slice: &[i32] = &arr[1..4];
+//     assert_eq!(slice, &[2, 3, 4]);
+// }
+
+//字符串切片
+// fn main() {
+//     let s = String::from("hello");
+//     let slice1 = &s[0..2];
+//     let slice2 = &s[..2];
+//     assert_eq!(slice1, slice2);
+// }
+
+// fn main() {
+//     let s = "你好，世界";
+//     let slice = &s[0..3];
+//     assert_eq!(slice, "你");
+// }
+
+// fn main() {
+//     let mut s = String::from("hello,world");
+//     let word = first_word(&s);
+//     //s.clear();
+//     println!("the first word is: {}", word);
+//     s.clear();
+// }
+//
+// fn first_word(s: &str) -> &str {
+//     &s[..1]
+// }
+
+// 元组( Tuple )
+// 🌟 元组中的元素可以是不同的类型。元组的类型签名是 (T1, T2, ...), 这里 T1, T2 是相对应的元组成员的类型.
+// fn main() {
+//     let _t0: (u8, i16) = (0, -1);
+//     let _t1: (u8, (i16, u32)) = (0, (-1, 1));
+//     let _t: (u8, u16, i16, &str, String) = (1u8, 2u16, 3i16, "hello", String::from(",world"));
+// }
+
+//🌟 可以使用索引来获取元组的成员
+// fn main() {
+//     let t = ("i", "am", "sunface");
+//     assert_eq!(t.2, "sunface");
+// }
+
+// 过长的元组无法被打印输出
+// fn main() {
+//     let too_long_tuple = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13);
+//     println!("too long tuple:{:?}", too_long_tuple);
+// }
+
+//使用模式匹配来解构元组
+// fn main() {
+//     let tup = (1, 6.4, "hello");
+//     let (x, y, z) = tup;
+//     assert_eq!(x, 1);
+//     assert_eq!(y, 6.4);
+//     assert_eq!(z, "hello");
+// }
+
+//解构式赋值
+// fn main() {
+//     //let (x, y, z)=();
+//     let (y, z, x) = (1, 2, 3);
+//     assert_eq!(x, 3);
+//     assert_eq!(y, 1);
+//     assert_eq!(z, 2);
+// }
+
+//元组可以用于函数的参数和返回值
+// fn main() {
+//     let (x, y) = sum_multiply((5, 6));
+//     assert_eq!(x, 11);
+//     assert_eq!(y, 30);
+// }
+//
+// fn sum_multiply(nums: (i32, i32)) -> (i32, i32) {
+//     (nums.0 + nums.1, nums.0 * nums.1)
+// }
+
+// 结构体
+// 三种类型的结构体
+// 🌟 对于结构体，我们必须为其中的每一个字段都指定具体的值
+// fn main() {
+//     let age = 30;
+//     let p = Person {
+//         name: String::from("sunface"),
+//         age,
+//         hobby: "coding".to_string(),
+//     };
+// }
+//
+// struct Person {
+//     name: String,
+//     age: u8,
+//     hobby: String,
+// }
+
+//🌟 单元结构体没有任何字段。
+// struct Unit;
+//
+// trait SomeTrait {}
+//
+// impl SomeTrait for Unit {}
+//
+// fn main() {
+//     let u = Unit;
+//     do_domething_with_unit(u);
+// }
+//
+// fn do_domething_with_unit(u: Unit) {}
+
+
+// 🌟🌟🌟 元组结构体看起来跟元组很像，但是它拥有一个结构体的名称，
+// 该名称可以赋予它一定的意义。由于它并不关心内部数据到底是什么名称，因此此时元组结构体就非常适合。
+// struct Color(i32, i32, i32);
+//
+// struct Point(i32, i32, i32);
+//
+// fn main() {
+//     let v = Point(0, 127, 255);
+//     check_color(v);
+// }
+//
+// fn check_color(p: Point) {
+//     let (x, _, _) = p;
+//     assert_eq!(x, 0);
+//     assert_eq!(p.1, 127);
+//     assert_eq!(p.2, 255);
+// }
+
+// 🌟🌟🌟 元组结构体看起来跟元组很像，但是它拥有一个结构体的名称，该名称可以赋予它一定的意义。
+// 由于它并不关心内部数据到底是什么名称，因此此时元组结构体就非常适合。
+// struct Color(i32, i32, i32);
+// struct Point(i32, i32, i32);
+// fn main() {
+//     let v = Point(0, 127, 255);
+//     check_color(v);
+// }
+//
+// fn check_color(p: Point) {
+//     let Point(x, _, _) = p;
+//     assert_eq!(x, 0);
+//     assert_eq!(p.1, 127);
+//     assert_eq!(p.2, 255);
+// }
+
+// 结构体上的一些操作
+// 🌟 你可以在实例化一个结构体时将它整体标记为可变的，但是 Rust 不允许我们将结构体的某个字段专门指定为可变的.
+// struct Person {
+//     name: String,
+//     age: u8,
+// }
+//
+// fn main() {
+//     let age = 18;
+//     let mut p = Person {
+//         name: String::from("sunface"),
+//         age,
+//     };
+//     println!("{},{}", p.name, p.age);
+//     p.age = 30;
+//     p.name = String::from("sunfei");
+//     println!("{},{}", p.name, p.age);
+// }
+
+//🌟 使用结构体字段初始化缩略语法可以减少一些重复代码
+// struct Person {
+//     name: String,
+//     age: u8,
+// }
+//
+// fn main() {
+//     let person = build_person(String::from("zhangsan"), 18);
+//     println!("{},{}", person.age, person.name);
+// }
+//
+// fn build_person(name: String, age: u8) -> Person {
+//     Person {
+//         age,
+//         name
+//     }
+// }
+
+//🌟 你可以使用结构体更新语法基于一个结构体实例来构造另一个
+// struct User {
+//     active: bool,
+//     username: String,
+//     email: String,
+//     sign_in_count: u64,
+// }
+//
+// fn main() {
+//     let u1 = User {
+//         email: String::from("someone@example.com"),
+//         username: String::from("sunface"),
+//         active: true,
+//         sign_in_count: 1,
+//     };
+//     println!("{},{},{},{}", u1.email, u1.username, u1.active, u1.sign_in_count);
+//     let u2 = set_email(u1);
+//     println!("{},{},{},{}", u2.email, u2.username, u2.active, u2.sign_in_count);
+// }
+//
+// fn set_email(u: User) -> User {
+//     User {
+//         email: String::from("contact@im.dev"),
+//         ..u
+//     }
+// }
+
+// 打印结构体
+// 🌟🌟 我们可以使用 #[derive(Debug)] 让结构体变成可打印的.
+// #[derive(Debug)]
+// struct Rectangle {
+//     width: u32,
+//     height: u32,
+// }
+//
+// fn main() {
+//     let scale = 2;
+//     let rect1 = Rectangle {
+//         width: dbg!(30 * scale),
+//         height: 50,
+//     };
+//     dbg!(&rect1);
+//     println!("{:?}", rect1);
+// }
+
+// 结构体的所有权
+// 当解构一个变量时，可以同时使用 move 和引用模式绑定的方式。当这么做时，
+// 部分 move 就会发生：变量中一部分的所有权被转移给其它变量，而另一部分我们获取了它的引用。
+// 在这种情况下，原变量将无法再被使用，但是它没有转移所有权的那一部分依然可以使用，也就是之前被引用的那部分。
+// fn main() {
+//     struct Person {
+//         name: String,
+//         age: Box<u8>,
+//     }
+//     let person = Person {
+//         name: String::from("alice"),
+//         age: Box::new(20),
+//     };
+//     let Person {
+//         name, ref age
+//     } = person;
+//     println!("the person's age is {}", age);
+//     println!("the person's name is {}", name);
+//     println!("the person's age from person struct is {}", person.age);
+// }
+
+// struct File {
+//     name: String,
+//     data: String,
+// }
+//
+// fn main() {
+//     let f = File {
+//         name: String::from("readme.md"),
+//         data: "Rust By Practice".to_string(),
+//     };
+//     let _name = f.name;
+//     println!("{}", f.data);
+// }
+
+// 枚举 Enum
+// 🌟🌟 在创建枚举时，你可以使用显式的整数设定枚举成员的值。
+// enum Number {
+//     Zero,
+//     One,
+//     Two,
+// }
+//
+// enum Number1 {
+//     Zero = 0,
+//     One,
+//     Two,
+// }
+//
+// enum Number2 {
+//     Zero = 0,
+//     One = 1,
+//     Two = 2,
+// }
+//
+// fn main() {
+//     assert_eq!(Number::One as u8, Number1::One as u8);
+//     assert_eq!(Number1::One as u8, Number2::One as u8);
+// }
+
+//🌟 枚举成员可以持有各种类型的值
+// enum Message {
+//     Quit,
+//     Move {
+//         x: i32,
+//         y: i32,
+//     },
+//     Write(String),
+//     ChangeColor(i32, i32, i32),
+// }
+//
+// fn main() {
+//     let msg1=Message::Move {x:1,y:2};
+//     let msg2=Message::Write(String::from("hello,world"));
+// }
+
+//todo:
+// 🌟🌟 枚举成员中的值可以使用模式匹配来获取
+// enum Message {
+//     Quit,
+//     Move { x: i32, y: i32 },
+//     Write(String),
+//     ChangeColor(i32, i32, i32),
+// }
+// fn main() {
+//     let msg = Message::Move { x: 1, y: 1 };
+//     if let Message::Move { x: a, y: b } = msg {
+//         assert_eq!(a, b);
+//     } else {
+//         panic!("不执行");
+//     }
+// }
+
+
+//🌟🌟 使用枚举对类型进行同一化
+//todo:
+// #[derive(Debug)]
+// enum Message {
+//     Quit,
+//     Move {
+//         x: i32,
+//         y: i32,
+//     },
+//     Write(String),
+//     ChangeColor(i32, i32, i32),
+// }
+// fn main() {
+//     let msgs: [Message; 3] = [
+//         Message::Quit,
+//         Message::Move { x: 1, y: 3 },
+//         Message::ChangeColor(255, 255, 0)
+//     ];
+//     for msg in msgs {
+//         show_message(msg)
+//     }
+// }
+// fn show_message(msg: Message) {
+//     println!("{:?}", msg);
+// }
+
+
+//🌟🌟 Rust 中没有 null，我们通过 Option<T> 枚举来处理值为空的情况
+//todo:
+// fn main() {
+//     let five = Some(5);
+//     let six = plus_one(five);
+//     let none = plus_one(None);
+//     if let Some(n) = six {
+//         println!("{}", n);
+//         return
+//     }
+//     panic!("不要执行");
+// }
+// fn plus_one(x: Option<i32>) -> Option<i32> {
+//     match x {
+//         None => None,
+//         Some(i) => Some(i + 1),
+//     }
+// }
+
+//TODO:
+//🌟🌟🌟🌟 使用枚举来实现链表.
+// use crate::List::*;
+//
+// enum List {
+//     Cons(u32, Box<List>),
+//     Nil,
+// }
+//
+// impl List {
+//     fn new() -> List {
+//         Nil
+//     }
+//     fn prepend(self, elem: u32) -> List {
+//         Cons(elem, Box::new(self))
+//     }
+//     fn len(&self) -> u32 {
+//         match *self {
+//             Cons(_, ref tail) => 1 + tail.len(),
+//             Nil => 0
+//         }
+//     }
+//     fn stringify(&self) -> String {
+//         match *self {
+//             Cons(head, ref tail) => {
+//                 format!("{}, {}", head, tail.stringify())
+//             }
+//             Nil => {
+//                 format!("Nil")
+//             }
+//         }
+//     }
+// }
+//
+// fn main() {
+//     let mut list = List::new();
+//     list = list.prepend(1);
+//     list = list.prepend(2);
+//     list = list.prepend(3);
+//     println!("链表的长度是：{}", list.len());
+//     println!("{}", list.stringify());
+// }
+
+// 流程控制
+// if/else
+// fn main() {
+//     let n = 5;
+//     if n < 0 {
+//         println!("{} is negative", n);
+//     } else if n > 0 {
+//         println!("{} is positive", n);
+//     } else {
+//         println!("{} is zero", n);
+//     }
+// }
+
+// fn main() {
+//     let n = 5;
+//     let big_n = if n < 10 && n > -10 {
+//         println!("数字太小，先增加10倍再说");
+//         10 * n
+//     } else {
+//         println!("数字太大，我们得让他减半");
+//         n / 2
+//     };
+//     println!("{}->{}", n, big_n);
+// }
+
+// fn main() {
+//     for n in 1..100 {
+//         if n == 100 {
+//             panic!("never let this run")
+//         }
+//     }
+// }
+
+// fn main() {
+//     let names = [String::from("liming"), String::from("hanameimei")];
+//     for name in &names {}
+//     println!("{:?}", names);
+//     let numbers = [1, 2, 3];
+//     for n in numbers {}
+//     println!("{:?}", numbers);
+// }
+
+// fn main() {
+//     let a = [4, 3, 2, 1];
+//     for (i, v) in a.iter().enumerate() {
+//         println!("第{}个元素是{}", i + 1, v);
+//     }
+// }
+
+// while
+// 🌟🌟 当条件为 true 时，while 将一直循环
+// fn main() {
+//     let mut n = 1;
+//     while n < 10 {
+//         if n % 15 == 0 {
+//             println!("fizzbuzz");
+//         } else if n % 3 == 0 {
+//             println!("fizz");
+//         } else if n % 5 == 0 {
+//             println!("{}", n);
+//         }
+//         n += 1;
+//     }
+//     println!("n的值是{}", n);
+// }
+
+// continue and break
+// 🌟 使用 break 可以跳出循环
+// fn main() {
+//     let mut n = 0;
+//     for i in 0..=100 {
+//         if n == 66 {
+//             break;
+//         }
+//         n += 1;
+//         println!("{}",i);
+//     }
+//     assert_eq!(n, 66);
+// }
+
+
+//🌟🌟 continue 会结束当次循环并立即开始下一次循环
+// fn main() {
+//     let mut n = 0;
+//     for _i1 in 0..=100 {
+//         if n != 66 {
+//             n += 1;
+//             continue;
+//         }
+//         break
+//     }
+//     assert_eq!(n, 66);
+// }
+
+// loop
+// 🌟🌟 loop 一般都需要配合 break 或 continue 一起使用。
+// fn main() {
+//     let mut count = 0u32;
+//     println!("let's count until infinity!");
+//     loop {
+//         count += 1;
+//         if count == 3 {
+//             println!("three");
+//             continue;
+//         }
+//         println!("{}", count);
+//         if count == 5 {
+//             println!("ok,that's enough");
+//             break;
+//         }
+//     }
+//     assert_eq!(count, 5);
+// }
+
+//🌟🌟 loop 是一个表达式，因此我们可以配合 break 来返回一个值
+// fn main() {
+//     let mut counter = 0;
+//     let result = loop {
+//         counter += 1;
+//         if counter == 10 {
+//             break counter*2;
+//         }
+//     };
+//     assert_eq!(result, 20);
+// }
+
+// 🌟🌟🌟 当有多层循环时，你可以使用 continue 或 break 来控制外层的循环。
+// 要实现这一点，外部的循环必须拥有一个标签 'label, 然后在 break 或 continue 时指定该标签
+//todo:
+// fn main() {
+//     let mut count = 0;
+//     'outer: loop {
+//         'inner1: loop {
+//             if count >= 20 {
+//                 break 'inner1;
+//             }
+//             count += 2;
+//         }
+//         count += 5;
+//         'inner2: loop {
+//             if count >= 30 {
+//                 break 'outer;
+//             }
+//             continue 'outer;
+//         }
+//     }
+//     assert_eq!(count, 30);
+// }
+
+// match, matches! 和 if let
+// match
+// enum Direction {
+//     East,
+//     West,
+//     North,
+//     South,
+// }
+//
+// fn main() {
+//     let dire = Direction::South;
+//     match dire {
+//         Direction::East => println!("East"),
+//         Direction::South | Direction::North => {
+//             println!("South or North");
+//         }
+//         _ => println!("West"),
+//     };
+// }
+
+//🌟🌟 match 是一个表达式，因此可以用在赋值语句中
+// fn main() {
+//     let boolean = true;
+//     let binary = match boolean {
+//         true => 1,
+//         false => 0
+//     };
+//     assert_eq!(binary, 1);
+// }
+
+//🌟🌟 使用 match 匹配出枚举成员持有的值
+// enum Message {
+//     Quit,
+//     Move { x: i32, y: i32 },
+//     Write(String),
+//     ChangeColor(i32, i32, i32),
+// }
+//
+// fn main() {
+//     let msgs = [
+//         Message::Quit,
+//         Message::Move { x: 1, y: 3 },
+//         Message::ChangeColor(255, 255, 0)
+//     ];
+//     for msg in msgs {
+//         show_message(msg);
+//     }
+// }
+//
+// fn show_message(msg: Message) {
+//     match msg {
+//         Message::Move { x: a, y: b } => {
+//             assert_eq!(a, 1);
+//             assert_eq!(b, 3);
+//             println!("参数是{}和{}", a, b);
+//         }
+//         Message::ChangeColor(r, g, b) => {
+//             assert_eq!(g, 255);
+//             assert_eq!(b, 0);
+//             println!("参数是{}和{}和{}", r, g, b);
+//         }
+//         __ => println!("no data in these variants")
+//     }
+// }
+
+// matches!
+// matches! 看起来像 match, 但是它可以做一些特别的事情
+// fn main() {
+//     let alphabets = ['a', 'E', 'Z', '0', 'x', '9', 'Y'];
+//     for ab in alphabets {
+//         assert!(matches!(ab,'a'..='z' | 'A'..='Z' | '0' | '9'))
+//     }
+// }
+
+
+// enum MyEnum {
+//     Foo,
+//     Bar,
+// }
+//
+// fn main() {
+//     let mut count = 0;
+//     let v = vec![MyEnum::Foo, MyEnum::Bar, MyEnum::Bar];
+//     for e in v {
+//         if matches!(e,MyEnum::Foo) {
+//             count += 1;
+//         }
+//     }
+//     assert_eq!(count, 2);
+// }
+
+// if let
+// 在有些时候, 使用 match 匹配枚举有些太重了，此时 if let 就非常适合.
+//todo:
+// fn main() {
+//     let o = Some(7);
+//     if let Some(i) = o {
+//         println!("this is a raally long string and '{:?}'", i);
+//     }
+// }
+
+// enum Foo {
+//     Bar(u8)
+// }
+//
+// fn main() {
+//     let a = Foo::Bar(1);
+//     if let Foo::Bar(i) = a {
+//         println!("{}", i);
+//     }
+// }
+
+
+// enum Foo {
+//     Bar,
+//     Baz,
+//     Qux(u32),
+// }
+//
+// fn main() {
+//     let a = Foo::Qux(10);
+//     match a {
+//         Foo::Bar => println!("match foo::bar"),
+//         Foo::Baz => println!("match foo::baz"),
+//         _ => println!("match others"),
+//     }
+// }
+
+//变量遮蔽( Shadowing )
+//todo:
+// fn main() {
+//     let age = Some(30);
+//     if let Some(age) = age {
+//         assert_eq!(age, 30);
+//     }
+//     match age {
+//         Some(age) => println!("age是一个新变量，它的值是{}", age),
+//         _ => ()
+//     }
+// }
+
+
+// 模式
+// 🌟🌟 使用 | 可以匹配多个值, 而使用 ..= 可以匹配一个闭区间的数值序列
+// fn main() {}
+//
+// fn match_number(n: i32) {
+//     match n {
+//         1 => println!("One"),
+//         2 | 3 | 4 | 5 => println!("match 2 -> 5"),
+//         6..=10 => {
+//             println!("match 6 -> 10")
+//         }
+//         _ => {
+//             println!("match 11-> +infinte")
+//         }
+//     }
+// }
+
+//🌟🌟🌟 @ 操作符可以让我们将一个与模式相匹配的值绑定到新的变量上
+// struct Point {
+//     x: i32,
+//     y: i32,
+// }
+//
+// fn main() {
+//     let p = Point { x: 2, y: 20 };
+//     match p {
+//         Point {
+//             x, y: 0
+//         } => println!("On the x axis at {}", x),
+//         Point {
+//             x: 0..=5, y: y @ (10 | 20 | 30)
+//         } => println!("On the y axis at {}", y),
+//         Point {
+//             x, y
+//         } => println!("On neither axis:{},{}", x, y),
+//     }
+// }
+
+
+#![allow(unused)]
+
+pub struct Rectangle {
+    width: u32,
+    height: u32,
 }
+
+impl Rectangle {
+    fn area(&self) -> u32 {
+        self.width * self.height
+    }
+
+    fn can_hold(&self, other: &Rectangle) -> bool {
+        self.width > other.width && self.height > other.height
+    }
+}
+
+fn main() {
+    let rect1 = Rectangle { width: 30, height: 50 };
+    let rect2 = Rectangle { width: 10, height: 40 };
+    let rect3 = Rectangle { width: 60, height: 45 };
+
+    println!("Can rect1 hold rect2? {}", rect1.can_hold(&rect2));
+    println!("Can rect1 hold rect3? {}", rect1.can_hold(&rect3));
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
