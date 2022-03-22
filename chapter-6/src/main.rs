@@ -1614,32 +1614,29 @@
 //     }
 // }
 
+// enum Message {
+//     Hello {
+//         id: i32
+//     },
+// }
+//
+// fn main() {
+//     let msg = Message::Hello { id: 5 };
+//     match msg {
+//         Message::Hello {
+//             id: id @ 3..=7,
+//         } => println!("id值的范围在3，7之间：{}",id),
+//         Message::Hello { id: newid @ ( 10 | 11 | 12) } => {
+//             println!("id值的范围在10，12之间：{}",newid)
+//         }
+//         Message::Hello { id } => println!("found some other id:{}", id),
+//     }
+// }
 
-#![allow(unused)]
 
-pub struct Rectangle {
-    width: u32,
-    height: u32,
-}
 
-impl Rectangle {
-    fn area(&self) -> u32 {
-        self.width * self.height
-    }
 
-    fn can_hold(&self, other: &Rectangle) -> bool {
-        self.width > other.width && self.height > other.height
-    }
-}
 
-fn main() {
-    let rect1 = Rectangle { width: 30, height: 50 };
-    let rect2 = Rectangle { width: 10, height: 40 };
-    let rect3 = Rectangle { width: 60, height: 45 };
-
-    println!("Can rect1 hold rect2? {}", rect1.can_hold(&rect2));
-    println!("Can rect1 hold rect3? {}", rect1.can_hold(&rect3));
-}
 
 
 
